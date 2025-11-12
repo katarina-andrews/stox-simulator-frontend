@@ -10,18 +10,18 @@ export default function StocksList({ stocks, setStocks }) {
 
     api
       .get("/stocks")
-      .then(function (response) {
+      .then(function (res) {
         // handle success
-        console.log(response);
-        setStocks(response.data);
+        console.log(res);
+        setStocks(res.data);
         setError("");
       })
-      .catch(function (error) {
+      .catch(function (err) {
         // handle error
-        console.log(error);
+        console.log(err);
         setError(
-          error.response?.data?.message ||
-            (error.response?.status === 429
+          err.response?.data?.message ||
+            (err.response?.status === 429
               ? "Too many requests. Please try again later."
               : "An unexpected error occurred")
         );
