@@ -48,10 +48,26 @@ export default function Portfolio({
     setSellModalOpen(true);
   };
 
+  // totals
+  const totalHoldingsValue = Object.entries(portfolio.holdings || {}).reduce(
+    (sum, [ticker, qty]) => {
+      const price = getStockPrice(ticker);
+      return sum + price * qty;
+    },
+    0
+  );
+  const totalPortfolioValue = totalHoldingsValue + (portfolio.cashBalance || 0);
+
   return (
     <section className="">
       <p className="text-lg font-bold mb-4">
         Cash: ${portfolio.cashBalance?.toFixed(2) ?? "0.00"}
+      </p>
+      <p className="text-lg font-bold mb-4">
+        Total Holdings Value: ${totalHoldingsValue.toFixed(2)}
+      </p>
+      <p className="text-lg font-bold mb-4">
+        Total Portfolio Value: ${totalPortfolioValue.toFixed(2)}
       </p>
 
       <h3 className="font-semibold my-4 text-xl">Holdings</h3>
