@@ -83,7 +83,7 @@ function App() {
         </header>
         <main>
           <p className="text-center text-gray-500 mt-5">
-            Please log in to view your stocks and portfolio.
+            Please log in to start trading.
           </p>
         </main>
       </>
@@ -100,7 +100,11 @@ function App() {
       <main>
         <section id="stocks">
           <h2 className="text-2xl font-bold mb-4">Stocks</h2>
-          <StocksList stocks={stocks} setStocks={setStocks} />
+          <StocksList
+            stocks={stocks}
+            setStocks={setStocks}
+            refreshPortfolio={refreshPortfolio}
+          />
         </section>
 
         <section id="portfolio">

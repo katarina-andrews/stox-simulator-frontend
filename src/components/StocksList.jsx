@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { api } from "../api";
+import BuyModal from "./BuyModal";
 
-export default function StocksList({ stocks, setStocks }) {
+export default function StocksList({ stocks, setStocks, refreshPortfolio }) {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [buyModalOpen, setBuyModalOpen] = useState(false);
+  const [selectedStock, setSelectedStock] = useState(null);
 
   useEffect(() => {
     setLoading(true);
@@ -31,6 +34,11 @@ export default function StocksList({ stocks, setStocks }) {
         setLoading(false);
       });
   }, []);
+
+  const openBuyModal = (stock) => {
+    setSelectedStock(stock);
+    setBuyModalOpen(true);
+  };
 
   if (loading) return <p>Loading stocks...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
@@ -63,12 +71,22 @@ export default function StocksList({ stocks, setStocks }) {
 
             <p className="text-gray-700 text-sm">{stock.name}</p>
             <p className="text-lg font-semibold mt-1">${stock.price}</p>
-            <button className="mt-3 w-full py-1.5 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 cursor-pointer">
+            <button
+              onClick={() => openBuyModal(stock)}
+              className="mt-3 w-full py-1.5 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 cursor-pointer"
+            >
               Buy
             </button>
           </div>
         ))}
       </div>
+      {buyModalOpen && (
+        <BuyModal
+          stock={selectedStock}
+          close={() => setBuyModalOpen(false)}
+          refreshPortfolio={refreshPortfolio}
+        />
+      )}
     </section>
   );
 }
