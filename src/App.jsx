@@ -10,6 +10,7 @@ function App() {
   const [stocks, setStocks] = useState([]);
   const [portfolio, setPortfolio] = useState({});
   const [addCashModalOpen, setAddCashModalOpen] = useState(false);
+
   const [close, setClose] = useState(false);
 
   const auth = useAuth();
@@ -119,6 +120,7 @@ function App() {
             portfolio={portfolio}
             setPortfolio={setPortfolio}
             stocks={stocks}
+            refreshPortfolio={refreshPortfolio}
           />
         </section>
 

@@ -1,9 +1,18 @@
 import { useEffect, useState } from "react";
 import { authorizedApi } from "../api";
 import { useAuth } from "react-oidc-context";
+import SellModal from "./SellModal";
 
-export default function Portfolio({ portfolio, setPortfolio, stocks }) {
+export default function Portfolio({
+  portfolio,
+  setPortfolio,
+  stocks,
+  refreshPortfolio,
+}) {
   const [loading, setLoading] = useState(false);
+  const [sellModalOpen, setSellModalOpen] = useState(false);
+  const [selectedHolding, setSelectedHolding] = useState(null);
+
   const auth = useAuth();
 
   useEffect(() => {
@@ -32,6 +41,11 @@ export default function Portfolio({ portfolio, setPortfolio, stocks }) {
   const getChangePercent = (symbol) => {
     const stock = stocks.find((s) => s.symbol === symbol);
     return stock ? stock.changePercent : 0;
+  };
+
+  const openSellModal = (ticker, qty) => {
+    setSelectedHolding({ ticker, qty });
+    setSellModalOpen(true);
   };
 
   return (
@@ -78,13 +92,23 @@ export default function Portfolio({ portfolio, setPortfolio, stocks }) {
                 Price: ${price.toFixed(2)}
               </p>
               <p className="text-lg font-semibold mt-1">Total: ${totalValue}</p>
-              <button className="w-full text-sm bg-red-600 hover:bg-red-700 text-white mt-3 py-1.5 rounded-lg cursor-pointer">
+              <button
+                onClick={() => openSellModal(ticker, qty)}
+                className="w-full text-sm bg-red-600 hover:bg-red-700 text-white mt-3 py-1.5 rounded-lg cursor-pointer"
+              >
                 Sell
               </button>
             </div>
           );
         })}
       </div>
+      {sellModalOpen && (
+        <SellModal
+          stock={selectedHolding}
+          close={() => setSellModalOpen(false)}
+          refreshPortfolio={refreshPortfolio}
+        />
+      )}
     </section>
   );
 }
