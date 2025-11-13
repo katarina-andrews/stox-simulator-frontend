@@ -55,15 +55,14 @@ function App() {
   const Badge = () => {
     if (auth.isAuthenticated) {
       return (
-        <div className="flex justify-between align-baseline">
-          <pre> Hello, {username} </pre>
-
+        <div className="flex flex-col justify-center items-center gap-5">
           <button
-            className="bg-blue-500 text-white px-3 py-1 rounded m-2"
+            className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded cursor-pointer"
             onClick={() => auth.removeUser()}
           >
             Sign out
           </button>
+          <pre> {username}'s dashboard </pre>
         </div>
       );
     }
@@ -72,10 +71,10 @@ function App() {
   if (!auth.isAuthenticated) {
     return (
       <>
-        <header className="mb-5 text-left h-48">
-          <h1 className="m-5 text-3xl text-center">Stox Simulator</h1>
+        <header className="mb-5 h-48 flex flex-col justify-center items-center">
+          <h1 className="m-5 text-3xl">Stox Simulator</h1>
           <button
-            className="bg-blue-500 text-white px-3 py-1 rounded m-2"
+            className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded cursor-pointer"
             onClick={() => auth.signinRedirect()}
           >
             Sign in
@@ -93,8 +92,8 @@ function App() {
 
   return (
     <>
-      <header className="mb-5 text-left h-48">
-        <h1 className="m-5 text-3xl text-center">Stox Simulator</h1>
+      <header className="mb-5 text-left h-48 p-10">
+        <h1 className="mb-5 text-3xl text-center">Stox Simulator</h1>
         <Badge />
       </header>
 
@@ -108,13 +107,14 @@ function App() {
           <h2 className="text-2xl font-bold mb-4">Portfolio</h2>
           <button
             onClick={() => setAddCashModalOpen(true)}
-            className="bg-green-500 text-white px-3 py-1 rounded"
+            className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded cursor-pointer mb-3"
           >
             Add Cash
           </button>
           <Portfolio
             portfolio={portfolio}
             setPortfolio={setPortfolio}
+            stocks={stocks}
           />
         </section>
 

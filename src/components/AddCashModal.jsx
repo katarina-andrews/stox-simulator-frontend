@@ -62,7 +62,7 @@ export default function AddCashModal({ close, refreshPortfolio }) {
             <button
               type="submit"
               disabled={loading}
-              className="bg-green-500 text-white px-4 py-2 rounded mr-2"
+              className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded mr-2 cursor-pointer"
             >
               {loading ? "Adding..." : "Confirm"}
             </button>
@@ -70,7 +70,7 @@ export default function AddCashModal({ close, refreshPortfolio }) {
             <button
               type="button"
               onClick={close}
-              className="bg-gray-300 px-4 py-2 rounded"
+              className="bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded cursor-pointer"
             >
               Cancel
             </button>

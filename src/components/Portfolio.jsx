@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { authorizedApi } from "../api";
 import { useAuth } from "react-oidc-context";
 
-export default function Portfolio({ portfolio, setPortfolio }) {
+export default function Portfolio({ portfolio, setPortfolio, stocks }) {
   const [loading, setLoading] = useState(false);
   const auth = useAuth();
 
@@ -24,6 +24,16 @@ export default function Portfolio({ portfolio, setPortfolio }) {
 
   if (loading) return <p>Loading portfolio...</p>;
 
+  const getStockPrice = (symbol) => {
+    const stock = stocks.find((s) => s.symbol === symbol);
+    return stock ? stock.price : 0;
+  };
+
+  const getChangePercent = (symbol) => {
+    const stock = stocks.find((s) => s.symbol === symbol);
+    return stock ? stock.changePercent : 0;
+  };
+
   return (
     <div className="">
       <p className="text-xl font-bold">
@@ -35,16 +45,39 @@ export default function Portfolio({ portfolio, setPortfolio }) {
         <p>No holdings yet.</p>
       )}
 
-      {Object.entries(portfolio.holdings || {}).map(([ticker, qty]) => (
-        <div key={ticker} className="flex justify-between mt-2">
-          <p>
-            {ticker}: {qty} shares
-          </p>
-          <button className="bg-red-500 text-white px-3 py-1 rounded">
-            Sell
-          </button>
-        </div>
-      ))}
+      {Object.entries(portfolio.holdings || {}).map(([ticker, qty]) => {
+        const price = getStockPrice(ticker);
+        const changePercent = getChangePercent(ticker);
+        const totalValue = (price * qty).toFixed(2);
+
+        return (
+          <div key={ticker} className="flex justify-between mt-2">
+            <div>
+              <p>
+                {ticker}: {qty} shares
+              </p>
+              <p className="text-gray-500 text-sm">
+                Total: ${totalValue}{" "}
+                <span
+                  className={`${
+                    changePercent > 0
+                      ? "text-green-600"
+                      : changePercent < 0
+                      ? "text-red-500"
+                      : "text-gray-500"
+                  }`}
+                >
+                  ({changePercent > 0 ? "+" : ""}
+                  {changePercent}%)
+                </span>
+              </p>
+            </div>
+            <button className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded cursor-pointer">
+              Sell
+            </button>
+          </div>
+        );
+      })}
     </div>
   );
 }

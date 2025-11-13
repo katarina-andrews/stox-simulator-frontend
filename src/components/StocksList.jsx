@@ -63,7 +63,7 @@ export default function StocksList({ stocks, setStocks }) {
 
             <p className="text-gray-700 text-sm">{stock.name}</p>
             <p className="text-lg font-semibold mt-1">${stock.price}</p>
-            <button className="mt-3 w-full py-1.5 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700">
+            <button className="mt-3 w-full py-1.5 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 cursor-pointer">
               Buy
             </button>
           </div>
