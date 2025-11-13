@@ -1,5 +1,17 @@
 @import "tailwindcss";
 
 :root {
-    margin: 10px;
+  margin: 10px;
+}
+
+.cancel-btn {
+  @apply bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded cursor-pointer;
+}
+
+.modal-div-1 {
+  @apply fixed inset-0 backdrop-blur-sm bg-white/30 flex items-center justify-center z-50;
+}
+
+.modal-div-2 {
+  @apply bg-white p-6 rounded-lg shadow-lg w-80;
 }

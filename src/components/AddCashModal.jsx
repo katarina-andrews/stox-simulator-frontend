@@ -40,8 +40,8 @@ export default function AddCashModal({ close, refreshPortfolio }) {
   };
 
   return (
-    <div className="fixed inset-0 backdrop-blur-sm bg-white/30 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-80">
+    <div className="modal-div-1">
+      <div className="modal-div-2">
         <h2 className="text-xl font-bold mb-4">Add Cash</h2>
 
         <form onSubmit={submitAddCash}>
@@ -67,11 +67,7 @@ export default function AddCashModal({ close, refreshPortfolio }) {
               {loading ? "Adding..." : "Confirm"}
             </button>
 
-            <button
-              type="button"
-              onClick={close}
-              className="bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded cursor-pointer"
-            >
+            <button type="button" onClick={close} className="cancel-btn">
               Cancel
             </button>
           </div>

@@ -12,12 +12,8 @@ export default function BuyModal({ stock, close, refreshPortfolio }) {
     setError("");
   }, []);
 
-  const submitBuy = (e) => {
-    e.preventDefault();
-    if (!auth.user?.access_token) {
-      setError("You must be logged in to make a purchase.");
-      return;
-    }
+  const submitBuy = (event) => {
+    event.preventDefault();
 
     const authorized = authorizedApi(auth.user.access_token);
     setLoading(true);
@@ -42,8 +38,8 @@ export default function BuyModal({ stock, close, refreshPortfolio }) {
   };
 
   return (
-    <div className="fixed inset-0 backdrop-blur-sm bg-white/30 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-80">
+    <div className="modal-div-1">
+      <div className="modal-div-2">
         <h2 className="text-xl font-bold mb-4">
           Buy {stock?.name} ({stock?.symbol})
         </h2>
@@ -66,15 +62,11 @@ export default function BuyModal({ stock, close, refreshPortfolio }) {
             <button
               type="submit"
               disabled={loading}
-              className="bg-green-500 text-white px-4 py-2 rounded mr-2"
+              className="bg-blue-600 hover:bg-blue-700  text-white px-4 py-2 rounded mr-2 cursor-pointer"
             >
               {loading ? "Buying..." : "Confirm"}
             </button>
-            <button
-              type="button"
-              onClick={close}
-              className="bg-gray-300 px-4 py-2 rounded"
-            >
+            <button type="button" onClick={close} className="cancel-btn">
               Cancel
             </button>
           </div>
