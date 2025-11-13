@@ -20,7 +20,7 @@ export default function Portfolio({ portfolio, setPortfolio, stocks }) {
       })
       .catch((err) => console.log(err))
       .finally(() => setLoading(false));
-  }, [auth.isAuthenticated]);
+  }, []);
 
   if (loading) return <p>Loading portfolio...</p>;
 
@@ -35,31 +35,32 @@ export default function Portfolio({ portfolio, setPortfolio, stocks }) {
   };
 
   return (
-    <div className="">
-      <p className="text-xl font-bold">
+    <section className="">
+      <p className="text-lg font-bold mb-4">
         Cash: ${portfolio.cashBalance?.toFixed(2) ?? "0.00"}
       </p>
 
-      <h3 className="font-semibold mt-4">Holdings</h3>
+      <h3 className="font-semibold my-4 text-xl">Holdings</h3>
+
       {Object.keys(portfolio.holdings || {}).length === 0 && (
-        <p>No holdings yet.</p>
+        <p className="text-gray-500">No holdings yet.</p>
       )}
 
-      {Object.entries(portfolio.holdings || {}).map(([ticker, qty]) => {
-        const price = getStockPrice(ticker);
-        const changePercent = getChangePercent(ticker);
-        const totalValue = (price * qty).toFixed(2);
+      <div className="flex gap-4 overflow-x-auto pb-3">
+        {Object.entries(portfolio.holdings || {}).map(([ticker, qty]) => {
+          const price = getStockPrice(ticker);
+          const changePercent = getChangePercent(ticker);
+          const totalValue = (price * qty).toFixed(2);
 
-        return (
-          <div key={ticker} className="flex justify-between mt-2">
-            <div>
-              <p>
-                {ticker}: {qty} shares
-              </p>
-              <p className="text-gray-500 text-sm">
-                Total: ${totalValue}{" "}
+          return (
+            <div
+              key={ticker}
+              className="min-w-[200px] flex-shrink-0 bg-white shadow-md rounded-xl p-4 border border-gray-200"
+            >
+              <div className="flex justify-between items-center mb-2">
+                <h3 className="font-semibold">{ticker}</h3>
                 <span
-                  className={`${
+                  className={`text-sm font-medium ${
                     changePercent > 0
                       ? "text-green-600"
                       : changePercent < 0
@@ -70,14 +71,20 @@ export default function Portfolio({ portfolio, setPortfolio, stocks }) {
                   ({changePercent > 0 ? "+" : ""}
                   {changePercent}%)
                 </span>
+              </div>
+
+              <p className="text-gray-700 text-sm">Shares: {qty}</p>
+              <p className="text-gray-700 text-sm">
+                Price: ${price.toFixed(2)}
               </p>
+              <p className="text-lg font-semibold mt-1">Total: ${totalValue}</p>
+              <button className="w-full text-sm bg-red-600 hover:bg-red-700 text-white mt-3 py-1.5 rounded-lg cursor-pointer">
+                Sell
+              </button>
             </div>
-            <button className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded cursor-pointer">
-              Sell
-            </button>
-          </div>
-        );
-      })}
-    </div>
+          );
+        })}
+      </div>
+    </section>
   );
 }
