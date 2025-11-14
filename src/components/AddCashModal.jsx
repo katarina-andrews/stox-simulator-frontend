@@ -17,12 +17,6 @@ export default function AddCashModal({ close, refreshPortfolio }) {
     setLoading(true);
     setError("");
 
-    if (!auth.isAuthenticated) {
-      setError("You must be logged in to add cash.");
-      setLoading(false);
-      return;
-    }
-
     const api = authorizedApi(auth.user.access_token);
 
     api

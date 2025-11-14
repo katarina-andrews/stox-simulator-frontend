@@ -16,8 +16,6 @@ export default function Portfolio({
   const auth = useAuth();
 
   useEffect(() => {
-    if (!auth.isAuthenticated) return;
-
     setLoading(true);
 
     const api = authorizedApi(auth.user.access_token);

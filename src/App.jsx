@@ -4,12 +4,14 @@ import { useAuth } from "react-oidc-context";
 import StocksList from "./components/StocksList";
 import Portfolio from "./components/Portfolio";
 import AddCashModal from "./components/AddCashModal";
+import TransactionsModal from "./components/TransactionsModal";
 import { api, authorizedApi } from "./api";
 
 function App() {
   const [stocks, setStocks] = useState([]);
   const [portfolio, setPortfolio] = useState({});
   const [addCashModalOpen, setAddCashModalOpen] = useState(false);
+  const [transactionsModalOpen, setTransactionsModalOpen] = useState(false);
 
   const [close, setClose] = useState(false);
 
@@ -110,12 +112,22 @@ function App() {
 
         <section id="portfolio">
           <h2 className="text-2xl font-bold mb-4">Portfolio</h2>
-          <button
-            onClick={() => setAddCashModalOpen(true)}
-            className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded cursor-pointer mb-3"
-          >
-            Add Cash
-          </button>
+          <div className="flex flex-col justify-between w-fit">
+            <button
+              onClick={() => setAddCashModalOpen(true)}
+              className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded cursor-pointer mb-3"
+            >
+              Add Cash
+            </button>
+
+            <button
+              onClick={() => setTransactionsModalOpen(true)}
+              className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded cursor-pointer mb-3"
+            >
+              View Transactions
+            </button>
+          </div>
+
           <Portfolio
             portfolio={portfolio}
             setPortfolio={setPortfolio}
@@ -129,6 +141,10 @@ function App() {
             close={() => setAddCashModalOpen(false)}
             refreshPortfolio={refreshPortfolio}
           />
+        )}
+
+        {transactionsModalOpen && (
+          <TransactionsModal close={() => setTransactionsModalOpen(false)} />
         )}
       </main>
       <footer></footer>
