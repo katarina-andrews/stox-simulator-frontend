@@ -7,19 +7,34 @@ export default function TransactionsModal({ close }) {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
 
-  useEffect(() => {
+  const fetchTransactions = (pageNum = 1) => {
+    if (!auth.isAuthenticated || !auth.user?.access_token) return;
+
     setLoading(true);
     const api = authorizedApi(auth.user.access_token);
 
     api
-      .get("/transactions")
-      .then((res) => setTransactions(res.data.transactions))
+      .get(`/transactions?page=${pageNum}`)
+      .then((res) => {
+        setTransactions(res.data.transactions);
+        setPage(res.data.page);
+        setTotal(res.data.total);
+        setError("");
+      })
       .catch((err) =>
         setError(err.response?.data?.error || "Failed to load transactions")
       )
       .finally(() => setLoading(false));
-  }, [auth]);
+  };
+
+  useEffect(() => {
+    fetchTransactions(page);
+  }, [page, auth.user]);
+
+  const totalPages = Math.ceil(total / 10);
 
   if (loading)
     return (
@@ -66,6 +81,28 @@ export default function TransactionsModal({ close }) {
                 )}
               </div>
             ))}
+          </div>
+        )}
+
+        {totalPages > 1 && (
+          <div className="flex justify-between mt-4">
+            <button
+              disabled={page <= 1}
+              onClick={() => setPage((p) => Math.max(p - 1, 1))}
+              className="bg-gray-300 px-3 py-1 rounded disabled:opacity-50 cursor-pointer"
+            >
+              Previous
+            </button>
+            <span className="text-sm">
+              Page {page} of {totalPages}
+            </span>
+            <button
+              disabled={page >= totalPages}
+              onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
+              className="bg-gray-300 px-3 py-1 rounded disabled:opacity-50 cursor-pointer"
+            >
+              Next
+            </button>
           </div>
         )}
 
